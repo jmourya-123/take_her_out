@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Be Mine?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg1: rgb(0, 249, 236);
+      --bg2: rgb(71, 150, 229);
+      --text: #ffffff;
+      --primary: #017cff;
+      --primary-ink: #0b5dcc;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+
+    body {
+      display: grid;
+      place-items: center;
+      background: linear-gradient(var(--bg1), var(--bg2));
+      font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+    }
+
+    .card {
+      width: min(680px, 92vw);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(8px);
+      border-radius: 18px;
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    .header_text {
+      font-size: clamp(28px, 4.2vw, 50px);
+      font-weight: 800;
+      margin: 6px 0 12px;
+    }
+
+    .text {
+      font-size: clamp(16px, 2.4vw, 22px);
+      font-weight: 600;
+      margin: 0 0 18px;
+      opacity: 0.95;
+    }
+
+    .buttons {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 16px auto 8px;
+      min-height: 52px;
+    }
+
+    .btn {
+      background-color: var(--primary);
+      color: white;
+      font-weight: 700;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+
+    .btn:hover { background-color: white; color: var(--primary); }
+
+    .btn:focus-visible {
+      outline: 3px solid white;
+      outline-offset: 2px;
+    }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.15);
+      color: white;
+    }
+
+    #yesButton {
+      background: linear-gradient(135deg, var(--primary), var(--primary-ink));
+    }
+
+    /* No button moves across viewport */
+    #noButton {
+      position: fixed;
+      transition: left 0.08s ease-out, top 0.08s ease-out;
+      will-change: left, top;
+    }
+
+    .gif_container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .footnote {
+      font-size: 14px;
+      opacity: 0.75;
+      margin-top: 10px;
+    }
+
+    .footnote a {
+      color: white;
+      text-decoration: none;
+      opacity: 0.35;
+    }
+
+    .modal {
+      border: none;
+      border-radius: 16px;
+      width: min(560px, 92vw);
+      padding: 0;
+      background: rgba(20, 28, 38, 0.9);
+      color: white;
+    }
+
+    .modal::backdrop { background: rgba(0,0,0,0.55); }
+
+    .modal-content {
+      padding: 24px 22px;
+      display: grid;
+      gap: 10px;
+      text-align: center;
+    }
+
+    .modal h2 {
+      margin: 0;
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .modal p {
+      margin: 0 0 6px;
+      font-size: 18px;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1 class="header_text">Will you be mine?</h1>
+    <p class="text">Jhumke bhi bole, nath bhi bole — bas tum haa kar do! 💙</p>
+
+    <div class="buttons" id="buttons">
+      <button id="yesButton" class="btn">Yes</button>
+      <button id="noButton" class="btn btn-ghost" aria-label="No">No</button>
+    </div>
+
+    <p class="footnote">
+      Made with a lot of pyaar <a href="#" aria-hidden="true">❤</a>
+    </p>
+  </main>
+
+  <dialog id="loveModal" class="modal">
+    <div class="modal-content">
+      <h2>You just made my day!</h2>
+      <p>Chalo, ab coffee date fix? ☕</p>
+      <div class="gif_container">
+        <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Happy dance" width="220" height="220" loading="lazy">
+      </div>
+      <button class="btn" id="closeModal">Aww, ok!</button>
+    </div>
+  </dialog>
+
+  <script>
+    const noBtn = document.getElementById('noButton');
+    const yesBtn = document.getElementById('yesButton');
+    const modal = document.getElementById('loveModal');
+    const closeModal = document.getElementById('closeModal');
+
+    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+    // Position No button randomly at start
+    function initNoButton() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const bw = noBtn.offsetWidth;
+      const bh = noBtn.offsetHeight;
+      noBtn.style.left = Math.random() * (w - bw) + 'px';
+      noBtn.style.top  = Math.random() * (h - bh) + 'px';
+    }
+
+    // Aggressive flee from cursor
+    function fleeFromCursor(e) {
+      const rect = noBtn.getBoundingClientRect();
+      const cx = e.clientX, cy = e.clientY;
+      const bx = rect.left + rect.width / 2;
+      const by = rect.top  + rect.height / 2;
+
+      const dx = bx - cx;
+      const dy = by - cy;
+      const dist = Math.hypot(dx, dy) || 1;
+
+      // Push harder when closer
+      const force = clamp(3000 / dist, 20, 150);
+      const nx = dx / dist, ny = dy / dist;
+
+      const jitter = 50;
+      let targetLeft = rect.left + nx * force + (Math.random() * jitter - jitter/2);
+      let targetTop  = rect.top  + ny * force + (Math.random() * jitter - jitter/2);
+
+      const w = window.innerWidth, h = window.innerHeight;
+      const bw = rect.width, bh = rect.height;
+
+      noBtn.style.left = clamp(targetLeft, 0, w - bw) + 'px';
+      noBtn.style.top  = clamp(targetTop,  0, h - bh) + 'px';
+    }
+
+    // Random drift to keep moving
+    let driftTimer = null;
+    function startDrift() {
+      stopDrift();
+      driftTimer = setInterval(() => {
+        const rect = noBtn.getBoundingClientRect();
+        const w = window.innerWidth, h = window.innerHeight;
+        const bw = rect.width, bh = rect.height;
+        const jump = 150 + Math.random() * 250;
+        const angle = Math.random() * Math.PI * 2;
+        const targetLeft = clamp(rect.left + Math.cos(angle) * jump, 0, w - bw);
+        const targetTop  = clamp(rect.top  + Math.sin(angle) * jump, 0, h - bh);
+        noBtn.style.left = targetLeft + 'px';
+        noBtn.style.top  = targetTop  + 'px';
+      }, 200); // Lower for more chaos
+    }
+    function stopDrift() { if (driftTimer) { clearInterval(driftTimer); driftTimer = null; } }
+
+    // Initialize
+    initNoButton();
+    startDrift();
+
+    // Events
+    window.addEventListener('mousemove', fleeFromCursor, { passive: true });
+
+    noBtn.addEventListener('mouseenter', initNoButton);
+
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      initNoButton();
+    }, { passive: false });
+
+    noBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      initNoButton();
+    });
+
+    window.addEventListener('resize', initNoButton);
+
+    // Yes button opens modal
+    yesBtn.addEventListener('click', () => {
+      stopDrift(); // Stop the chaos
+      if (typeof modal.showModal === 'function') modal.showModal();
+      else alert('You just made my day! Chalo, coffee date? ☕');
+    });
+
+    // Close modal
+    closeModal.addEventListener('click', () => {
+      modal.close();
+      startDrift(); // Resume chaos if she closes modal
+    });
+  </script>
+</body>
+</html>
