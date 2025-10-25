@@ -1,148 +1,88 @@
-:root {
-  --bg1: rgb(0, 249, 236);
-  --bg2: rgb(71, 150, 229);
-  --text: #ffffff;
-  --primary: #017cff;
-  --primary-ink: #0b5dcc;
-}
-
-* { 
-  box-sizing: border-box; 
-}
-
-html, body { 
-  height: 100%; 
-}
-
 body {
-  margin: 0;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(var(--bg1), var(--bg2));
-  font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color: var(--text);
-}
-
-.card {
-  width: min(680px, 92vw);
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.18);
-  backdrop-filter: blur(8px);
-  border-radius: 18px;
-  padding: 28px 24px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-}
-
-.header_text {
-  font-size: clamp(28px, 4.2vw, 50px);
-  font-weight: 800;
-  margin: 6px 0 12px;
-}
-
-.text {
-  font-size: clamp(16px, 2.4vw, 22px);
-  font-weight: 600;
-  margin: 0 0 18px;
-  opacity: 0.95;
-}
-
-.buttons {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
+  display: flex;
   justify-content: center;
-  gap: 12px;
-  margin: 16px auto 8px;
-  min-height: 52px;
+  align-items: center;
+  height: 100vh;
+
+  background: linear-gradient(rgb(0, 249, 236), rgb(71, 150, 229));
 }
 
-.btn {
-  background-color: var(--primary);
-  color: white;
-  font-weight: 700;
-  padding: 12px 24px;
-  font-size: 16px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-}
-
-.btn:hover { 
-  background-color: white; 
-  color: var(--primary); 
-}
-
-.btn:focus-visible {
-  outline: 3px solid white;
-  outline-offset: 2px;
-}
-
-.btn-ghost {
-  background: rgba(255,255,255,0.15);
-  color: white;
+#noButton {
+  position: absolute;
+  margin-left: 150px;
+  transition: 0.5s;
+  margin-top: 30px;
 }
 
 #yesButton {
-  background: linear-gradient(135deg, var(--primary), var(--primary-ink));
+  position: absolute;
+  margin-right: 150px;
+  margin-top: 30px;
 }
 
-/* No button moves across viewport */
-#noButton {
-  position: fixed;
-  transition: left 0.08s ease-out, top 0.08s ease-out;
-  will-change: left, top;
+.header_text {
+  font-family: "Nunito";
+  font-size: 50px;
+  font-weight: bold;
+
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.text {
+  font-family: "Nunito";
+  font-size: 25px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.btn {
+  background-color: #017cff;
+  color: white;
+  font-weight: 600;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 3px 3px black;
+}
+
+.btn:hover {
+  background-color: #ffffff;
+  color: #017cff;
 }
 
 .gif_container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 12px;
 }
-
-.footnote {
-  font-size: 14px;
-  opacity: 0.75;
-  margin-top: 10px;
-}
-
-.footnote a {
+p {
   color: white;
-  text-decoration: none;
-  opacity: 0.35;
+  margin-left: 50%;
 }
-
-.modal {
-  border: none;
-  border-radius: 16px;
-  width: min(560px, 92vw);
-  padding: 0;
-  background: rgba(20, 28, 38, 0.9);
-  color: white;
-}
-
-.modal::backdrop { 
-  background: rgba(0,0,0,0.55); 
-}
-
-.modal-content {
-  padding: 24px 22px;
-  display: grid;
-  gap: 10px;
-  text-align: center;
-}
-
-.modal h2 {
-  margin: 0;
-  font-size: 26px;
-  font-weight: 800;
-}
-
-.modal p {
-  margin: 0 0 6px;
-  font-size: 18px;
-  opacity: 0.9;
+p a {
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  font-weight: 600;
+  opacity: 0.25;
 }
