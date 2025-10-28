@@ -4,7 +4,7 @@ body {
   align-items: center;
   height: 100vh;
 
-  background: linear-gradient(rgb(0, 249, 236), rgb(71, 150, 229));
+  background: linear-gradient(120deg, #fbc2eb, #a6c1ee);
 }
 
 #noButton {
@@ -86,3 +86,4 @@ p a {
   font-weight: 600;
   opacity: 0.25;
 }
+
