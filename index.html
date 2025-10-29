@@ -1,51 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <title>Hey kindhearted soul 💕</title>
   </head>
+
   <body>
     <div class="container">
       <div>
-        <h1 class="header_text">Hey kindhearted soul, I don’t normally get signs from the universe, but this one says… pizza or Chinese with you??</h1>
+        <h1 class="header_text">
+          Hey kindhearted soul, I don’t normally get signs from the universe,
+          but this one says… pizza or Chinese with you?? 🍕🥢
+        </h1>
       </div>
+
       <div class="gif_container">
         <img
           src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3BqNms1bHlqMXQydjMxMjNld3c5YTBuZjUxZzJsbnRnb3ZtdjVvYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FEsDNy8LHzHj6yrAKe/giphy.gif"
           alt="Cute animated illustration"
         />
       </div>
+
       <div class="buttons">
-        <button class="btn" id="yesButton" onclick="nextPage()">Yes</button>
+        <button class="btn" id="yesButton" onclick="showDatePicker()">Yes 😍</button>
         <button
           class="btn"
           id="noButton"
           onmouseover="moveButton()"
           onclick="moveButton()"
         >
-          No
+          No 🙈
         </button>
-
-        <script>
-          function nextPage() {
-            window.location.href = "yes.html";
-          }
-
-          function moveButton() {
-            var x =
-              Math.random() *
-              (window.innerWidth -
-                document.getElementById("noButton").offsetWidth);
-            var y =
-              Math.random() *
-              (window.innerHeight -
-                document.getElementById("noButton").offsetHeight);
-            document.getElementById("noButton").style.left = `${x}px`;
-            document.getElementById("noButton").style.top = `${y}px`;
-          }
-        </script>
       </div>
+
+      <div id="dateContainer" style="display:none; margin-top:20px; text-align:center;">
+        <p>Select a date for our date 💖</p>
+        <input
+          type="date"
+          id="dateInput"
+          style="padding:8px; border-radius:8px; border:1px solid #ccc;"
+        />
+        <br /><br />
+        <button
+          class="btn"
+          style="background-color:#ff4d87; color:white;"
+          onclick="submitDate()"
+        >
+          Submit Date
+        </button>
+      </div>
+
+      <p id="responseMsg" style="margin-top:20px; color:white; font-size:18px;"></p>
     </div>
+
+    <script>
+      // Replace with your actual Google Apps Script Web App URL
+      const endpoint = "https://script.google.com/macros/s/AKfycbwJWAamv5W1rpc7kkzRaExGpkQVbc7odvzIZH-V5pusHkuAXqWIG5UB2NmJt4t0W_ON/exec";
+
+      function moveButton() {
+        const button = document.getElementById("noButton");
+        const x = Math.random() * (window.innerWidth - button.offsetWidth);
+        const y = Math.random() * (window.innerHeight - button.offsetHeight);
+        button.style.position = "absolute";
+        button.style.left = `${x}px`;
+        button.style.top = `${y}px`;
+      }
+
+      function showDatePicker() {
+        document.getElementById("dateContainer").style.display = "block";
+        document.getElementById("responseMsg").textContent =
+          "Aha! I knew you’d say yes 😏 — pick a date!";
+        localStorage.setItem("answer", "Yes");
+      }
+
+      async function submitDate() {
+        const date = document.getElementById("dateInput").value;
+        const answer = localStorage.getItem("answer");
+
+        if (!date) {
+          alert("Please pick a date first 💌");
+          return;
+        }
+
+        document.getElementById(
+          "responseMsg"
+        ).textContent = `Our date is set for ${date}! I can’t wait 💞`;
+
+        // Save response to Google Sheet
+        try {
+          await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: "Her 💕",
+              answer: answer,
+              date: date,
+              browser: navigator.userAgent,
+            }),
+          });
+          console.log("Response saved:", { answer, date });
+        } catch (error) {
+          console.error("Error saving response:", error);
+        }
+      }
+    </script>
   </body>
 </html>
-
-
